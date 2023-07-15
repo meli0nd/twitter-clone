@@ -1,0 +1,180 @@
+@import "../../scss/variables.scss";
+.infobar {
+  width: 350px;
+  max-width: 350px;
+  position: fixed;
+  right: 300px;
+  padding: 20px;
+  margin-bottom: 20px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+
+  .infobarSearch {
+    min-width: 350px;
+    position: relative;
+    img {
+      width: 20px;
+      position: absolute;
+      left: 17px;
+      top: 15px;
+    }
+    input {
+      transition: 0.1s;
+      width: 100%;
+      font-weight: 400;
+      background: $infobar-bg;
+      border-radius: 26px;
+      padding: 15px 15px 15px 50px;
+      border: none;
+      outline: none;
+      &::placeholder {
+        color: #333;
+      }
+      &:focus {
+        background: #dee0e0;
+      }
+    }
+  }
+
+  .infobarItem {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 348px;
+    background: $infobar-bg;
+    border-radius: 20px;
+
+    .infobarItemHeader {
+      padding: 15px;
+      font-size: 10px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      h1 {
+        font-weight: 800;
+      }
+      img {
+        cursor: pointer;
+      }
+    }
+    a {
+      width: 100%;
+      font-size: 14px;
+      padding: 15px;
+      text-align: center;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      display: inline-block;
+      text-align: start;
+      font-weight: 300;
+      text-decoration: none;
+      color: $primary-blue;
+      &:hover {
+        background: $primary-hover;
+      }
+    }
+    .trendsItem {
+      transition: 0.2s;
+      padding: 10px 20px 10px 15px;
+      width: 100%;
+      display: flex;
+      align-items: start;
+      cursor: pointer;
+      justify-content: space-between;
+      .trendsItemInfo {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: start;
+
+        span {
+          font-size: 12px;
+          font-weight: 400;
+          color: $primary-text-gray;
+        }
+        h1 {
+          cursor: pointer;
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+      img {
+        cursor: pointer;
+        display: block;
+        margin-top: 15px;
+        width: 15px;
+      }
+      &:hover {
+        background: rgba($color: $primary-hover, $alpha: 1);
+      }
+    }
+
+    .userItem {
+      padding: 15px;
+      width: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: 0.2s;
+      cursor: pointer;
+
+      .userContainer {
+        display: flex;
+        align-items: center;
+        .userItemInfo {
+          display: flex;
+          align-items: start;
+          justify-content: center;
+          flex-direction: column;
+          margin-left: 10px;
+          .userName {
+            font-size: 14px;
+            transition: 0.2s;
+            font-weight: 700;
+            cursor: pointer;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+          .userLogin {
+            font-size: 14px;
+            font-weight: 400;
+            color: $primary-text-gray;
+          }
+        }
+        img {
+          cursor: pointer;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+        }
+      }
+      .followButton {
+        transition: 0.2s;
+        border: none;
+        border-radius: 26px;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 6px 15px;
+        background: #000;
+        color: white;
+        cursor: pointer;
+        &:hover {
+          background: #222;
+        }
+      }
+
+      &:hover {
+        background: rgba($color: $primary-hover, $alpha: 1);
+      }
+    }
+  }
+}

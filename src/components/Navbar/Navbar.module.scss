@@ -1,0 +1,142 @@
+@import "../../scss/variables.scss";
+.navbar {
+  position: relative;
+  position: fixed;
+  left: 0;
+  width: 540px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+
+  .navbarHeader {
+    transition: 0.3s;
+    width: 73%;
+    padding-top: 7px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    .navbarHeaderContent {
+      border-radius: 70px;
+      padding-block: 5px;
+      padding-inline: 15px;
+      right: 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      img {
+        display: block;
+        margin-right: 25px;
+      }
+      h1 {
+        font-size: 26px;
+      }
+      &:hover {
+        background: rgba($color: $primary-hover, $alpha: 0.3);
+      }
+    }
+  }
+
+  .navbarListItem {
+    transition: 0.2s;
+    border-radius: 26px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    padding: 10px 15px;
+    width: 255px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    span {
+      font-size: 18px;
+      font-weight: 400;
+      text-align: start;
+      display: inline-block;
+      margin-left: 20px;
+    }
+    &:hover {
+      background: rgba($color: $primary-hover, $alpha: 0.4);
+    }
+  }
+
+  .navbarList {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    flex-direction: column;
+  }
+
+  .navbarTop {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .navbarListButton {
+    transition: 0.2s;
+    padding: 13px 102px;
+    background: $primary-blue;
+    color: #fff;
+    border-radius: 26px;
+    cursor: pointer;
+    margin-bottom: 230px;
+    &:hover {
+      background: rgba($color: $primary-blue, $alpha: 1);
+    }
+  }
+
+  .navbarBottom {
+    padding: 10px 15px;
+    border-radius: 90px;
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    width: 255px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    transition: 0.3s;
+    cursor: pointer;
+    img {
+      border-radius: 50%;
+      width: 50px;
+    }
+    img {
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+    }
+
+    .navbarUserInfo {
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: 15px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .userLogin {
+      font-weight: 300;
+      color: $primary-text-gray;
+    }
+    .navbarMoreInfo {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      img {
+        width: 15px;
+        background: none;
+        border-radius: 0;
+      }
+    }
+    &:hover {
+      background: rgba($color: $primary-hover, $alpha: 1);
+    }
+  }
+}
