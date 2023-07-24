@@ -1,0 +1,64 @@
+@import "../../../scss/variables.scss";
+.tweet {
+  width: 100%;
+  display: flex;
+  align-items: start;
+  padding-top: 15px;
+  border-bottom: 1px solid $primary-hover;
+  .tweetUser {
+    padding-left: 15px;
+    margin-right: 15px;
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  .tweetContainer {
+    width: 100%;
+    textarea {
+      font-weight: 400;
+      resize: none;
+      appearance: none;
+      border: none;
+      outline: none;
+      font-size: 18px;
+      max-width: 100%;
+      min-width: 100%;
+    }
+    display: flex;
+    flex-direction: column;
+    .tweetOptions {
+      padding-block: 10px;
+      border-top: 1px solid $primary-hover;
+      justify-content: space-between;
+      display: flex;
+      padding-right: 15px;
+    }
+    .optionsItem {
+      transition: 0.3s;
+      cursor: pointer;
+      margin-right: 10px;
+      padding: 5px;
+      border-radius: 50%;
+      &:hover {
+        background: rgba($color: $primary-blue, $alpha: 0.2);
+      }
+    }
+    .emojiPopUp {
+      width: 353px;
+    }
+  }
+  .tweetButton {
+    border: none;
+    padding: 10px 20px;
+    transition: 0.2s;
+    background: $primary-blue;
+    color: #fff;
+    border-radius: 26px;
+    cursor: pointer;
+  }
+  .tweetOptions {
+    display: flex;
+    align-items: center;
+  }
+}

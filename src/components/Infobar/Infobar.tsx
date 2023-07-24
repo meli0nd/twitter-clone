@@ -7,7 +7,7 @@ const Infobar: FC = () => {
   return (
     <div className={s.infobar}>
       <div className={s.infobarSearch}>
-        <img src="img/infobar-search.svg" alt="search" />
+        <img src="img/infobar/infobar-search.svg" alt="search" />
         <input type="search" placeholder="Search Tweety" />
       </div>
       <Trends />

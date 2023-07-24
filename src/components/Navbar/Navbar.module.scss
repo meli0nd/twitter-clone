@@ -40,12 +40,15 @@
   }
 
   .navbarListItem {
+    text-decoration: none;
+    color: #000;
     transition: 0.2s;
     border-radius: 26px;
     margin-bottom: 20px;
+    margin-right: 20px;
     cursor: pointer;
     padding: 10px 15px;
-    width: 255px;
+    width: 225px;
     display: flex;
     justify-content: start;
     align-items: center;
@@ -79,14 +82,15 @@
 
   .navbarListButton {
     transition: 0.2s;
-    padding: 13px 102px;
     background: $primary-blue;
     color: #fff;
     border-radius: 26px;
     cursor: pointer;
+    padding: 13px 94px;
     margin-bottom: 230px;
+    margin-right: 15px;
     &:hover {
-      background: rgba($color: $primary-blue, $alpha: 1);
+      background: rgba($color: $primary-blue, $alpha: 0.7);
     }
   }
 

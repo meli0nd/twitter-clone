@@ -10,8 +10,8 @@ const RecUserItem: FC = () => {
           alt="user photo"
         />
         <div className={s.userItemInfo}>
-          <span className={s.userName}>Meliond</span>
-          <span className={s.userLogin}>@meliond</span>
+          <span className={s.userName}>Meliond23123123</span>
+          <span className={s.userLogin}>@melion1232123123d</span>
         </div>
       </div>
       <button className={s.followButton}>Follow</button>

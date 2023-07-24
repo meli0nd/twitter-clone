@@ -13,7 +13,7 @@ const User: FC<TUser> = ({ image }) => {
         <span className={s.userLogin}>@meliond</span>
       </div>
       <div className={s.navbarMoreInfo}>
-        <img src="img/trendslist-icon.svg" alt="more info" />
+        <img src="img/infobar/trendslist-icon.svg" alt="more info" />
       </div>
     </div>
   )

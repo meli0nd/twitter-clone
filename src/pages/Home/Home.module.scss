@@ -58,8 +58,8 @@
     }
   }
   .homeContent {
-    padding-top: 115px;
+    min-height: 100vh;
+    padding-top: 120px;
     border-inline: 1px solid $borders;
-    overflow-x: scroll;
   }
 }

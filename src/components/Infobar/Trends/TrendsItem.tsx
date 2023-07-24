@@ -5,11 +5,11 @@ const TrendsItem = () => {
   return (
     <div className={s.trendsItem}>
       <div className={s.trendsItemInfo}>
-        <span>Trending in Germany</span>
-        <h1>Revolution</h1>
+        <span>Trending in Germanysadsad</span>
+        <h1>Revolution123123123</h1>
         <span>50.4K Tweets</span>
       </div>
-      <img src="img/trendslist-icon.svg" alt="show more" />
+      <img src="img/infobar/trendslist-icon.svg" alt="show more" />
     </div>
   )
 }
