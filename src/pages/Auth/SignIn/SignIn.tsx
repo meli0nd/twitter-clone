@@ -6,7 +6,7 @@ const SignIn = () => {
   return (
     <div className={s.signIn}>
       <div className={s.signInLogo}>
-        <img src="img/navbar/nav-logo.svg" alt="logo" />
+        <img src="img/common/main-logo.svg" alt="logo" />
       </div>
       <h1>Log in to Tweety</h1>
       <div className={s.signInForm}>

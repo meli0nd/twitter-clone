@@ -2,9 +2,11 @@
 .home {
   position: relative;
   width: 600px;
+  right: 100px;
   max-width: 600px;
   height: 100vh;
   .homeHeader {
+    cursor: pointer;
     position: fixed;
     display: flex;
     flex-direction: column;

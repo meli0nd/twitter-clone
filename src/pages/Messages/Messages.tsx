@@ -5,9 +5,7 @@ import Infobar from "../../components/Infobar/Infobar"
 const Messages = () => {
   return (
     <>
-      <Navbar />
       <div>Messages</div>
-      <Infobar />
     </>
   )
 }

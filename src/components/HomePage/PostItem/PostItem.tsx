@@ -40,7 +40,9 @@ const PostItem = () => {
         </div>
       </div>
       <div className={s.postItemMore}>
-        <img src="img/infobar/trendslist-icon.svg" alt="more" />
+        <div>
+          <img src="img/common/more-info-icon.svg" alt="more" />
+        </div>
       </div>
     </div>
   )

@@ -9,7 +9,7 @@ const TrendsItem = () => {
         <h1>Revolution123123123</h1>
         <span>50.4K Tweets</span>
       </div>
-      <img src="img/infobar/trendslist-icon.svg" alt="show more" />
+      <img src="img/common/more-info-icon.svg" alt="show more" />
     </div>
   )
 }

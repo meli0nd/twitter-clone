@@ -1,11 +1,11 @@
 @import "../../scss/variables.scss";
+
 .infobar {
   width: 350px;
   max-width: 350px;
   position: fixed;
-  right: 300px;
-  padding: 20px;
-  margin-bottom: 20px;
+  right: 350px;
+  padding: 5px;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -177,4 +177,8 @@
       }
     }
   }
+}
+
+.infobarActive {
+  right: 367px !important;
 }

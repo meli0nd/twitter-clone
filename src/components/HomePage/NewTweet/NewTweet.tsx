@@ -58,8 +58,8 @@ const NewTweet: FC = () => {
         <div className={s.tweetArea}>
           <textarea
             draggable="false"
-            placeholder="What's happening?!"
             contentEditable="true"
+            placeholder="What's happening?!"
             ref={textArea}
             value={tweetValue}
             onChange={(e: any) => setTweetValue(e.target.value)}

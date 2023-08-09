@@ -53,23 +53,71 @@
     }
     .postItemComments,
     .postItemLikes {
+      transition: 0.3s;
       cursor: pointer;
       display: flex;
       align-items: center;
       span {
+        transition: 0.3s;
         font-weight: 400;
         color: $primary-text-gray;
         font-size: 16px;
         margin-left: 15px;
+      }
+      img {
+        transition: 0.2s;
+        padding: 5px;
+        border-radius: 50%;
+        width: 30px;
+      }
+    }
+    .postItemLikes {
+      &:hover {
+        span {
+          color: #ef1c5c;
+        }
+        img {
+          background: rgba($color: #ef1c5c, $alpha: 0.4);
+          filter: invert(21%) sepia(51%) saturate(6452%) hue-rotate(331deg)
+            brightness(96%) contrast(94%);
+        }
+      }
+    }
+    .postItemComments {
+      &:hover {
+        span {
+          color: $primary-blue;
+        }
+        img {
+          background: rgba($color: $primary-blue, $alpha: 0.4);
+          filter: invert(65%) sepia(52%) saturate(5925%) hue-rotate(176deg)
+            brightness(99%) contrast(91%);
+        }
       }
     }
     display: flex;
   }
 
   .postItemMore {
-    img {
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      transition: 0.3s;
+      border-radius: 50%;
       cursor: pointer;
-      width: 15px;
+      img {
+        transition: 0.3s;
+        width: 15px;
+      }
+      &:hover {
+        background: rgba($color: $primary-blue, $alpha: 0.2);
+        img {
+          filter: invert(65%) sepia(52%) saturate(5925%) hue-rotate(176deg)
+            brightness(99%) contrast(91%);
+        }
+      }
     }
   }
 }

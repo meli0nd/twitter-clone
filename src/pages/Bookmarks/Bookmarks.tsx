@@ -5,9 +5,7 @@ import Infobar from "../../components/Infobar/Infobar"
 const Bookmarks = () => {
   return (
     <>
-      <Navbar />
       <div>Bookmarks</div>
-      <Infobar />
     </>
   )
 }

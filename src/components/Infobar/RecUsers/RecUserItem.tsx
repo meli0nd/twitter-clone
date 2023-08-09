@@ -6,7 +6,7 @@ const RecUserItem: FC = () => {
     <div className={s.userItem}>
       <div className={s.userContainer}>
         <img
-          src="http://zbs-sticker.by/stories/images/prod/3862x0ccc-300x220.png"
+          src="https://pbs.twimg.com/profile_images/1686411476578222080/UUhdotjk_400x400.jpg"
           alt="user photo"
         />
         <div className={s.userItemInfo}>

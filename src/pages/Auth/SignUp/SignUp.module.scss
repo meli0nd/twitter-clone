@@ -1,0 +1,62 @@
+@import "../../../scss/variables.scss";
+
+.signUp {
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  display: flex;
+
+  .signUpLeftSide {
+    width: 60%;
+    height: 100vh;
+    img {
+      width: 100%;
+    }
+  }
+
+  .signUpRightSide {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    margin-left: 40px;
+  }
+
+  .signUpRightLogo {
+    img {
+      width: 60px;
+      height: 50px;
+    }
+  }
+  h1 {
+    margin-block: 20px;
+    font-size: 72px;
+  }
+  h2 {
+    font-size: 36px;
+  }
+
+  .signUpOptions {
+    margin-block: 40px;
+  }
+
+  .signUpEmail {
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+    padding: 20px 80px;
+    border: 1px solid $borders;
+    border-radius: 30px;
+  }
+
+  .toSignIn {
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    a {
+      margin-left: 10px;
+    }
+  }
+}
