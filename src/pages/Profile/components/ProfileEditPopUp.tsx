@@ -5,7 +5,11 @@ import { formRegex } from "../../../assets/regex"
 import { useSelector } from "react-redux"
 import { RootState } from "../../../Redux/store/store"
 import { useDispatch } from "react-redux"
-import { updateUserPopUp } from "../../../Redux/reducers/user"
+import {
+  updateUserPopUp,
+  updateUserThunk,
+} from "../../../Redux/reducers/user-profile"
+import PopUpForm from "./PopUpForm"
 
 type TProfilEditPopUp = {
   setProfileEditPopUp: any
@@ -13,7 +17,7 @@ type TProfilEditPopUp = {
 
 const ProfileEditPopUp: FC<TProfilEditPopUp> = ({ setProfileEditPopUp }) => {
   const popUpBody = useRef<HTMLDivElement>(null)
-  const { user } = useSelector((s: RootState) => s.userReducer)
+  const { user } = useSelector((s: RootState) => s.profileReducer)
   const dispatch = useDispatch()
   const {
     register,
@@ -32,23 +36,26 @@ const ProfileEditPopUp: FC<TProfilEditPopUp> = ({ setProfileEditPopUp }) => {
   const websiteLength = formValues.website ? formValues.website.length : 0
   const [websiteInputActive, setWebsiteInputActive] = useState<boolean>(false)
 
+  const [changedBanner, setChangedBanner] = useState<string | null>(null)
+  const [changedAvatar, setChangedAvatar] = useState<string | null>(null)
   const onClickOutSide = (event: any) => {
     if (popUpBody.current && !popUpBody.current.contains(event.target)) {
       setProfileEditPopUp(false)
     }
   }
 
-  const onSubmit = (data: any) => {
+  const onSubmit = () => {
     const values = getValues()
     const userData = {
-      avatar: values.avatar.length ? URL.createObjectURL(values.avatar[0]) : "",
-      banner: values.banner.length ? URL.createObjectURL(values.avatar[0]) : "",
+      avatar: values.avatar[0],
+      banner: values.banner[0],
       name: values.name,
       bio: values.bio || "",
       location: values.location || "",
       website: values.website || "",
     }
-    dispatch(updateUserPopUp(userData))
+    //@ts-ignore
+    dispatch(updateUserThunk(userData))
     setProfileEditPopUp(false)
   }
 
@@ -66,7 +73,7 @@ const ProfileEditPopUp: FC<TProfilEditPopUp> = ({ setProfileEditPopUp }) => {
     return () => {
       subscription.unsubscribe()
     }
-  }, [watch])
+  }, [watch, changedBanner])
 
   useEffect(() => {
     setTimeout(() => {
@@ -108,7 +115,12 @@ const ProfileEditPopUp: FC<TProfilEditPopUp> = ({ setProfileEditPopUp }) => {
                 type="file"
                 id="profileBanner"
                 accept="image/png, image/jpeg"
-                {...register("banner", { required: false })}
+                {...register("banner", {
+                  required: false,
+                  onChange(event) {
+                    setChangedBanner(URL.createObjectURL(event.target.files[0]))
+                  },
+                })}
               />
               <label htmlFor="profileBanner">
                 <img src="img/common/upload.svg" alt="upload" />
@@ -119,14 +131,18 @@ const ProfileEditPopUp: FC<TProfilEditPopUp> = ({ setProfileEditPopUp }) => {
             </div>
           </div>
           <div className={s.bannerOverlay}></div>
-          <img
-            src={
-              user?.banner
-                ? user?.banner
-                : "https://pbs.twimg.com/profile_banners/1680124447754272768/1690906783/600x200"
-            }
-            alt="banner"
-          />
+          <div className={s.profileBannerImage}>
+            <img
+              src={
+                changedBanner
+                  ? changedBanner
+                  : user?.banner
+                  ? user?.banner
+                  : "https://pbs.twimg.com/profile_banners/1680124447754272768/1690906783/600x200"
+              }
+              alt="banner"
+            />
+          </div>
         </div>
         <div className={s.profileAvatarContainer}>
           <div className={s.profileAvatarBtn}>
@@ -135,11 +151,15 @@ const ProfileEditPopUp: FC<TProfilEditPopUp> = ({ setProfileEditPopUp }) => {
                 <img src="img/common/upload.svg" alt="upload" />
               </label>
               <input
+                // defaultValue="Choose new avatar"
                 type="file"
                 id="profileAvatar"
                 accept="image/png, image/jpeg"
                 {...register("avatar", {
                   required: false,
+                  onChange(event) {
+                    setChangedAvatar(URL.createObjectURL(event.target.files[0]))
+                  },
                 })}
               />
             </div>
@@ -147,7 +167,7 @@ const ProfileEditPopUp: FC<TProfilEditPopUp> = ({ setProfileEditPopUp }) => {
           <div
             className={s.profileAvatar}
             style={
-              user?.avatar
+              user?.avatar || changedAvatar
                 ? {
                     width: "120px",
                     height: "120px",
@@ -163,228 +183,39 @@ const ProfileEditPopUp: FC<TProfilEditPopUp> = ({ setProfileEditPopUp }) => {
           >
             {!!user?.avatar && <div className={s.avatarOverlay}></div>}
             <img
-              src={user?.avatar ? user?.avatar : "img/common/main-logo.svg"}
+              src={
+                changedAvatar
+                  ? changedAvatar
+                  : user?.avatar
+                  ? user?.avatar
+                  : "img/common/main-logo.svg"
+              }
               alt="avatar"
               style={
-                user?.avatar
+                user?.avatar || changedAvatar
                   ? { borderRadius: "50%", width: "120px", height: "120px" }
                   : { borderRadius: "0%", width: "80px", height: "80px" }
               }
             />
           </div>
         </div>
-        <div className={s.profilePopUpForm}>
-          <div className={s.formName}>
-            <label
-              htmlFor="name"
-              className={`${nameInputActive && s.inputActive} ${s.inputLabels}`}
-            >
-              <span
-                style={
-                  nameInputActive
-                    ? {
-                        position: "relative",
-                        top: "0px",
-                        fontSize: "14px",
-                      }
-                    : user?.name && user?.name.length === 0
-                    ? {
-                        position: "relative",
-                        top: "13px",
-                        fontSize: "18px",
-                      }
-                    : {
-                        position: "relative",
-                        top: "0px",
-                        fontSize: "14px",
-                      }
-                }
-              >
-                Name
-              </span>
-              <p>{nameLength}/20</p>
-            </label>
-            <input
-              defaultValue={user?.name || ""}
-              onFocus={() => setNameInputActive(true)}
-              type="text"
-              id="name"
-              {...register("name", {
-                required: true,
-                maxLength: 20,
-                pattern: formRegex.name,
-                onBlur() {
-                  setNameInputActive(false)
-                },
-              })}
-              maxLength={20}
-              style={
-                errors.name && {
-                  border: "2px solid red",
-                }
-              }
-            />
-            {errors.name?.type === "required" && (
-              <span className={s.errorMessage}>Name is required</span>
-            )}
-          </div>
-          <div className={s.formBio}>
-            <label
-              htmlFor="bio"
-              className={`${bioInputActive && s.inputActive} ${s.inputLabels}`}
-            >
-              <span
-                style={
-                  bioInputActive
-                    ? {
-                        position: "relative",
-                        top: "0px",
-                        fontSize: "14px",
-                      }
-                    : user?.bio && user?.bio.length === 0
-                    ? {
-                        position: "relative",
-                        top: "13px",
-                        fontSize: "18px",
-                      }
-                    : {
-                        position: "relative",
-                        top: "0px",
-                        fontSize: "14px",
-                      }
-                }
-              >
-                Bio
-              </span>
-              <p>{bioLength}/100</p>
-            </label>
-            <textarea
-              defaultValue={user?.bio || ""}
-              onFocus={() => setBioInputActive(true)}
-              id="bio"
-              {...register("bio", {
-                required: false,
-                maxLength: 100,
-                onBlur() {
-                  setBioInputActive(false)
-                },
-              })}
-              maxLength={100}
-              style={
-                errors.bio && {
-                  border: "2px solid red",
-                }
-              }
-            />
-          </div>
-          <div className={s.formLocation}>
-            <label
-              htmlFor="location"
-              className={`${locationInputActive && s.inputActive} ${
-                s.inputLabels
-              }`}
-            >
-              <span
-                style={
-                  locationInputActive
-                    ? {
-                        position: "relative",
-                        top: "0px",
-                        fontSize: "14px",
-                      }
-                    : user?.location && user?.location.length === 0
-                    ? {
-                        position: "relative",
-                        top: "13px",
-                        fontSize: "18px",
-                      }
-                    : {
-                        position: "relative",
-                        top: "0px",
-                        fontSize: "14px",
-                      }
-                }
-              >
-                Location
-              </span>
-              <p>{locationLength}/30</p>
-            </label>
-            <input
-              defaultValue={user?.location || ""}
-              onFocus={() => setLocationInputActive(true)}
-              type="text"
-              id="location"
-              {...register("location", {
-                required: false,
-                maxLength: 30,
-                onBlur() {
-                  setLocationInputActive(false)
-                },
-              })}
-              maxLength={30}
-              style={
-                errors.location && {
-                  border: "2px solid red",
-                }
-              }
-            />
-            {errors.location?.type === "pattern" && (
-              <span className={s.errorMessage}>Letters required</span>
-            )}
-          </div>
-          <div className={s.formWebsite}>
-            <label
-              htmlFor="website"
-              className={`${websiteInputActive && s.inputActive} ${
-                s.inputLabels
-              }`}
-            >
-              <span
-                style={
-                  websiteInputActive
-                    ? {
-                        position: "relative",
-                        top: "0px",
-                        fontSize: "14px",
-                      }
-                    : user?.website && user?.website.length === 0
-                    ? {
-                        position: "relative",
-                        top: "13px",
-                        fontSize: "18px",
-                      }
-                    : {
-                        position: "relative",
-                        top: "0px",
-                        fontSize: "14px",
-                      }
-                }
-              >
-                Website
-              </span>
-              <p>{websiteLength}/20</p>
-            </label>
-            <input
-              defaultValue={user?.website || ""}
-              onFocus={() => setWebsiteInputActive(true)}
-              type="text"
-              id="website"
-              {...register("website", {
-                required: false,
-                maxLength: 20,
-                onBlur() {
-                  setWebsiteInputActive(false)
-                },
-              })}
-              maxLength={20}
-              style={
-                errors.website && {
-                  border: "2px solid red",
-                }
-              }
-            />
-          </div>
-        </div>
+        <PopUpForm
+          nameInputActive={nameInputActive}
+          nameLength={nameLength}
+          setNameInputActive={setNameInputActive}
+          user={user}
+          register={register}
+          errors={errors}
+          bioInputActive={bioInputActive}
+          bioLength={bioLength}
+          setBioInputActive={setBioInputActive}
+          locationInputActive={locationInputActive}
+          locationLength={locationLength}
+          setLocationInputActive={setLocationInputActive}
+          websiteInputActive={websiteInputActive}
+          websiteLength={websiteLength}
+          setWebsiteInputActive={setWebsiteInputActive}
+        />
       </div>
     </form>
   )

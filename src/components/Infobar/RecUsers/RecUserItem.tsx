@@ -1,17 +1,37 @@
 import React, { FC } from "react"
 import s from "../Infobar.module.scss"
 
-const RecUserItem: FC = () => {
+type TRecUserItem = {
+  avatar: string
+  login: string
+  username: string
+}
+
+const RecUserItem: FC<TRecUserItem> = ({ avatar, login, username }) => {
   return (
     <div className={s.userItem}>
       <div className={s.userContainer}>
-        <img
-          src="https://pbs.twimg.com/profile_images/1686411476578222080/UUhdotjk_400x400.jpg"
-          alt="user photo"
-        />
+        <div className={s.userInfoAvatarImage}>
+          <img
+            src={avatar?.length > 1 ? avatar : "img/common/main-logo.svg"}
+            alt="user avatar"
+            style={
+              avatar?.length === 0
+                ? {
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "0",
+                  }
+                : {
+                    width: "40px",
+                    height: "40px",
+                  }
+            }
+          />
+        </div>
         <div className={s.userItemInfo}>
-          <span className={s.userName}>Meliond23123123</span>
-          <span className={s.userLogin}>@melion1232123123d</span>
+          <span className={s.userName}>{username}</span>
+          <span className={s.userLogin}>@{login}</span>
         </div>
       </div>
       <button className={s.followButton}>Follow</button>

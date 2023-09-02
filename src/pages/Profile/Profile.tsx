@@ -1,34 +1,32 @@
 import React, { FC, useEffect, useState } from "react"
 import Infobar from "../../components/Infobar/Infobar"
 import s from "./Profile.module.scss"
-import PostItem from "../../components/HomePage/PostItem/PostItem"
-import { NavLink, useNavigate } from "react-router-dom"
+import PostItem from "../../components/PostItem/PostItem"
+import { NavLink, useNavigate, useParams } from "react-router-dom"
 import UserInfo from "./components/UserInfo"
 import ProfileEditPopUp from "./components/ProfileEditPopUp"
 import { useSelector } from "react-redux"
 import { RootState } from "../../Redux/store/store"
+import { useDispatch } from "react-redux"
+import { getUserThunk } from "../../Redux/reducers/user-profile"
 
 const profileNav = [
-  { name: "Tweets", id: 0, link: "/profile" },
-  { name: "Media", id: 1, link: "media" },
-  { name: "Likes", id: 2, link: "likes" },
+  { name: "Tweets", id: 0, link: "/profile/" },
+  { name: "Media", id: 1, link: "/profile/media" },
+  { name: "Likes", id: 2, link: "/profile/likes" },
 ]
 
 const Profile: FC = () => {
-  const [currentLink, setCurrentLink] = useState<number>(0)
+  const dispatch = useDispatch()
   const [scrollToTop, setScrollToTop] = useState<boolean>(false)
   const [profileEditPopUp, setProfileEditPopUp] = useState<boolean>(false)
   const navigate = useNavigate()
-  const { user, isAuth } = useSelector((s: RootState) => s.userReducer)
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [currentLink, scrollToTop])
+  const { user } = useSelector((s: RootState) => s.profileReducer)
+  const { id } = useParams()
 
   useEffect(() => {
-    if (!isAuth) {
-      navigate("/auth/signup")
-    }
-  }, [isAuth])
+    window.scrollTo(0, 0)
+  }, [scrollToTop])
 
   if (profileEditPopUp) {
     document.body.style.overflowY = "hidden"
@@ -60,19 +58,14 @@ const Profile: FC = () => {
             <span>3 Tweets</span>
           </div>
         </div>
-        <UserInfo
-          setProfileEditPopUp={setProfileEditPopUp}
-          user={user}
-          isAuth={isAuth}
-        />
+        <UserInfo setProfileEditPopUp={setProfileEditPopUp} user={user} />
         <div className={s.profileTweetsOptions}>
           {profileNav.map((item, index) => {
             return (
               <NavLink
                 to={item.link}
-                className={index === currentLink ? s.active : ""}
+                className={(linkData) => (linkData.isActive ? s.active : "")}
                 key={item.id}
-                onClick={() => setCurrentLink(index)}
               >
                 <span>{item.name}</span>
               </NavLink>

@@ -6,6 +6,7 @@
   max-width: 600px;
   height: 100vh;
   .homeHeader {
+    z-index: 99;
     cursor: pointer;
     position: fixed;
     display: flex;
@@ -26,7 +27,8 @@
       .active {
         h1 {
           position: relative;
-          font-weight: 600;
+          font-weight: 800;
+          color: #000;
           &:after {
             position: absolute;
             bottom: 0;

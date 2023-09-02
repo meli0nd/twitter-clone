@@ -57,6 +57,10 @@
 
     a {
       margin-left: 10px;
+      text-decoration: none;
+      &:visited {
+        color: $primary-blue;
+      }
     }
   }
 }

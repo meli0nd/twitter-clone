@@ -1,8 +1,16 @@
-import React from "react"
+import React, { useEffect } from "react"
 import s from "./SignUp.module.scss"
 import { NavLink } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { setRegisterSuccess } from "../../../Redux/reducers/auth"
 
 const SignUp = () => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    //@ts-ignore
+    dispatch(setRegisterSuccess(false))
+  }, [])
+
   return (
     <div className={s.signUp}>
       <div className={s.signUpLeftSide}>

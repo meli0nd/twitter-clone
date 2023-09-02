@@ -1,11 +1,11 @@
 import React, { FC, useState, useEffect } from "react"
 import s from "./Home.module.scss"
-import NewTweet from "../../components/HomePage/NewTweet/NewTweet"
-import PostItem from "../../components/HomePage/PostItem/PostItem"
+import NewTweet from "./NewTweet/NewTweet"
+import PostItem from "../../components/PostItem/PostItem"
 import Infobar from "../../components/Infobar/Infobar"
+import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { RootState } from "../../Redux/store/store"
-import { useNavigate } from "react-router-dom"
 
 const settingLists = [
   { name: "For you", id: 0, sort: "all" },
@@ -13,20 +13,26 @@ const settingLists = [
 ]
 
 const Home: FC = () => {
+  const navigate = useNavigate()
   const [postSettings, setPostSettings] = useState<number>(0)
   const [scrollToTop, setScrollToTop] = useState<boolean>(false)
-  const { isAuth } = useSelector((s: RootState) => s.userReducer)
-  const navigate = useNavigate()
+  const { error } = useSelector((s: RootState) => s.authReducer)
 
   useEffect(() => {
-    if (!isAuth) {
-      navigate("/auth/signup")
+    //@ts-ignore
+    const userUID = JSON.parse(localStorage.getItem("FB_auth"))
+    if (!userUID || error) {
+      navigate("/auth/signin")
     }
-  }, [isAuth])
+  }, [error])
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [postSettings, scrollToTop])
+
+  if (error) {
+    return <div></div>
+  }
 
   return (
     <>
@@ -41,7 +47,7 @@ const Home: FC = () => {
               return (
                 <div
                   key={item.id}
-                  className={index === postSettings && s.active}
+                  className={index === postSettings ? s.active : ""}
                   onClick={() => setPostSettings(item.id)}
                 >
                   <h1>{item.name}</h1>

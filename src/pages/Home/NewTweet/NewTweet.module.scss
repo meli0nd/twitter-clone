@@ -15,6 +15,7 @@
   }
   .tweetContainer {
     width: 100%;
+    position: relative;
     textarea {
       font-weight: 400;
       resize: none;
@@ -45,6 +46,7 @@
       }
     }
     .emojiPopUp {
+      height: 0px;
       width: 353px;
     }
   }

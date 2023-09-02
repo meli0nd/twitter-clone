@@ -4,7 +4,28 @@ import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { formRegex } from "../../../../assets/regex"
 import { useDispatch } from "react-redux"
-import { setUserAction } from "../../../../Redux/reducers/user"
+import {
+  setRegisterSuccess,
+  signUpThunk,
+} from "../../../../Redux/reducers/auth"
+import { NavLink } from "react-router-dom"
+import { useSelector } from "react-redux"
+import { RootState } from "../../../../Redux/store/store"
+import { getAllUsersLoginThunk } from "../../../../Redux/reducers/users"
+import ErrorMessage from "../../../../components/Message/Message"
+import Message from "../../../../components/Message/Message"
+
+type TSignUpForm = {
+  avatar?: FileList
+  name: string
+  login: string
+  email: string
+  day: string
+  month: string
+  year: string
+  password: string
+  confirm_password: string
+}
 
 const SignUpEmail = () => {
   const {
@@ -13,37 +34,54 @@ const SignUpEmail = () => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm({
+  } = useForm<TSignUpForm>({
     mode: "onChange",
   })
 
-  const [pageCount, setPageCount] = useState(1)
+  const [pageCount, setPageCount] = useState<number>(1)
+  const [showPass, setShowPass] = useState<boolean>(false)
+  const [showConfirmPass, setShowConfirmPass] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const { usersLogin, usersEmail } = useSelector(
+    (s: RootState) => s.usersReducer
+  )
   const onSubmit = (data: any) => {
-    if (pageCount === 3) {
-      const userData = {
-        avatar: data.avatar[0] ? URL.createObjectURL(data.avatar[0]) : "",
-        userBirthDate: {
-          day: data.day,
-          month: data.month,
-          year: data.year,
-        },
-        name: data.name,
-        login: data.login,
-        password: data.password,
-        confirm_password: data.confirm_password,
-        email: data.email,
-        banner: "",
-        bio: "",
-        location: "",
-        website: "",
-      }
-      dispatch(setUserAction(userData))
-      navigate("/home")
+    if (usersLogin.includes(data.login)) {
+      setError("Login is already taken")
+    } else if (usersEmail.includes(data.email)) {
+      setError("Email is already taken")
     } else {
-      setPageCount((prev) => prev + 1)
+      if (pageCount === 3) {
+        setError(null)
+        const userData = {
+          avatar: data.avatar[0],
+          userBirthDate: {
+            day: data.day,
+            month: data.month,
+            year: data.year,
+          },
+          name: data.name,
+          login: data.login,
+          password: data.password,
+          email: data.email,
+          banner: "",
+          bio: "",
+          location: "",
+          website: "",
+          posts: [],
+          following: [],
+          bookmarks: [],
+        }
+        // @ts-ignore
+        dispatch(signUpThunk(userData))
+        navigate("/auth/signin")
+      } else if (!usersLogin.includes(data.login)) {
+        setError(null)
+        setPageCount((prev) => prev + 1)
+      }
     }
   }
   const userData = getValues()
@@ -55,8 +93,14 @@ const SignUpEmail = () => {
     }
   }, [watch])
 
+  useEffect(() => {
+    //@ts-ignore
+    dispatch(getAllUsersLoginThunk())
+  }, [])
+
   return (
     <form className={s.signUpEmail} onSubmit={handleSubmit(onSubmit)}>
+      {error && <Message title={error} />}
       {pageCount === 1 && (
         <div className={s.signUpEmailContainer}>
           <img src="img/common/main-logo.svg" alt="main logo" />
@@ -73,9 +117,11 @@ const SignUpEmail = () => {
               maxLength={20}
               minLength={3}
               style={
-                errors.login && {
-                  border: "2px solid red",
-                }
+                errors.login || error === "Login is already taken"
+                  ? {
+                      border: "2px solid red",
+                    }
+                  : {}
               }
             />
             {errors.login?.type === "required" && (
@@ -124,9 +170,11 @@ const SignUpEmail = () => {
               })}
               maxLength={20}
               style={
-                errors.email && {
-                  border: "2px solid red",
-                }
+                errors.email || error === "Email is already taken"
+                  ? {
+                      border: "2px solid red",
+                    }
+                  : {}
               }
             />
             {errors.email?.type === "required" && (
@@ -259,58 +307,97 @@ const SignUpEmail = () => {
           <img src="img/common/main-logo.svg" alt="main logo" />
           <h1>Create an account</h1>
           <div className={s.signUpEmailFormSecond}>
-            <input
-              type="password"
-              placeholder="Password"
-              {...register("password", {
-                required: true,
-                minLength: 8,
-                maxLength: 20,
-              })}
-              maxLength={20}
-              minLength={3}
-              style={
-                errors.password && {
-                  border: "2px solid red",
-                }
-              }
-            />
-            {errors.password?.type === "required" && (
-              <span className={s.errorMessage}>Password is required</span>
-            )}
-            {errors.password?.type === "minLength" && (
-              <span className={s.errorMessage}>
-                Password must be more than 8 symbols
-              </span>
-            )}
-            <input
-              type="password"
-              placeholder="Confirm password"
-              {...register("confirm_password", {
-                required: true,
-                validate: (val: string) => {
-                  if (watch("password") != val) {
-                    return "Your passwords do no match"
+            <div className={s.inputContainer}>
+              <input
+                type={showPass ? "text" : "password"}
+                placeholder="Password"
+                {...register("password", {
+                  required: true,
+                  minLength: 8,
+                  maxLength: 20,
+                })}
+                maxLength={20}
+                minLength={3}
+                style={
+                  errors.password && {
+                    border: "2px solid red",
                   }
-                },
-              })}
-            />
-            {errors.confirm_password?.type === "required" && (
-              <span className={s.errorMessage}>
-                Confirm password is required
-              </span>
-            )}
-            {errors.confirm_password?.type === "validate" && (
-              <span className={s.errorMessage}>
-                {errors.confirm_password.message?.toString()}
-              </span>
-            )}
+                }
+              />
+              <div
+                className={s.showPass}
+                onClick={() => setShowPass(!showPass)}
+              >
+                <img
+                  src={
+                    showPass
+                      ? "img/auth/hide-pass.svg"
+                      : "img/auth/show-pass.svg"
+                  }
+                  alt="show pass"
+                />
+              </div>
+              {errors.password?.type === "required" && (
+                <span className={s.errorMessage}>Password is required</span>
+              )}
+              {errors.password?.type === "minLength" && (
+                <span className={s.errorMessage}>
+                  Password must be more than 8 symbols
+                </span>
+              )}
+            </div>
+            <div className={s.inputContainer}>
+              <input
+                type={showConfirmPass ? "text" : "password"}
+                placeholder="Confirm password"
+                {...register("confirm_password", {
+                  required: true,
+                  maxLength: 20,
+                  validate: (val: string) => {
+                    if (watch("password") != val) {
+                      return "Your passwords do no match"
+                    }
+                  },
+                })}
+                maxLength={20}
+              />
+              <div
+                className={s.showPass}
+                onClick={() => setShowConfirmPass(!showConfirmPass)}
+              >
+                <img
+                  src={
+                    showConfirmPass
+                      ? "img/auth/hide-pass.svg"
+                      : "img/auth/show-pass.svg"
+                  }
+                  alt="show pass"
+                />
+              </div>
+              {errors.confirm_password?.type === "required" && (
+                <span className={s.errorMessage}>
+                  Confirm password is required
+                </span>
+              )}
+              {errors.confirm_password?.type === "validate" && (
+                <span className={s.errorMessage}>
+                  {errors.confirm_password.message?.toString()}
+                </span>
+              )}
+            </div>
             <span>Choose avatar</span>
             <input
+            className={s.uploadAvatar}
               type="file"
               accept="image/png, image/jpeg"
               {...register("avatar", { required: false })}
             />
+            <button
+              className={s.signUpBtn}
+              onClick={() => handleSubmit(onSubmit)}
+            >
+              Next
+            </button>
             <button
               className={s.signUpBtn}
               onClick={() => {
@@ -318,12 +405,6 @@ const SignUpEmail = () => {
               }}
             >
               Back
-            </button>
-            <button
-              className={s.signUpBtn}
-              onClick={() => handleSubmit(onSubmit)}
-            >
-              Next
             </button>
           </div>
         </div>
@@ -334,9 +415,9 @@ const SignUpEmail = () => {
           <h1>Create an account</h1>
           <div className={s.signUpEmailFormFinal}>
             <div className={s.signUpProfileView}>
-              {userData.avatar[0] ? (
+              {userData?.avatar && userData?.avatar[0] ? (
                 <img
-                  src={URL.createObjectURL(userData.avatar[0])}
+                  src={URL.createObjectURL(userData?.avatar[0])}
                   alt="profile image"
                 />
               ) : (
@@ -369,7 +450,6 @@ const SignUpEmail = () => {
               </div>
             </div>
             <input type="submit" id="submitForm" />
-
             <label htmlFor="submitForm" className={s.signUpBtn}>
               Okay
             </label>
@@ -383,18 +463,21 @@ const SignUpEmail = () => {
         </div>
       )}
 
-      <div className={s.signUpCount}>
-        <span className={`${s.signCount} + ${pageCount === 1 && s.active}`}>
-          1
-        </span>
-        <div className={s.signCountLine}></div>
-        <span className={`${s.signCount} + ${pageCount === 2 && s.active}`}>
-          2
-        </span>
-        <div className={s.signCountLine}></div>
-        <span className={`${s.signCount} + ${pageCount === 3 && s.active}`}>
-          3
-        </span>
+      <div className={s.bottom}>
+        <NavLink to="/auth/signin">Log in</NavLink>
+        <div className={s.signUpCount}>
+          <span className={`${s.signCount} + ${pageCount === 1 && s.active}`}>
+            1
+          </span>
+          <div className={s.signCountLine}></div>
+          <span className={`${s.signCount} + ${pageCount === 2 && s.active}`}>
+            2
+          </span>
+          <div className={s.signCountLine}></div>
+          <span className={`${s.signCount} + ${pageCount === 3 && s.active}`}>
+            3
+          </span>
+        </div>
       </div>
     </form>
   )

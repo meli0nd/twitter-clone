@@ -2,6 +2,7 @@ import data from "@emoji-mart/data"
 import React, { FC, useState, useEffect, useRef, lazy, Suspense } from "react"
 import s from "./NewTweet.module.scss"
 import useAutosizeTextArea from "../../../hooks/useAutosizeTextArea"
+import Loader from "../../../components/Loader/Loader"
 
 const EmojiPicker = lazy(() => import("@emoji-mart/react"))
 
@@ -58,11 +59,13 @@ const NewTweet: FC = () => {
         <div className={s.tweetArea}>
           <textarea
             draggable="false"
-            contentEditable="true"
             placeholder="What's happening?!"
             ref={textArea}
             value={tweetValue}
             onChange={(e: any) => setTweetValue(e.target.value)}
+            style={{
+              height: "26px",
+            }}
           />
         </div>
         <div className={s.tweetOptions}>

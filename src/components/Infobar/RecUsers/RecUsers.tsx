@@ -1,17 +1,29 @@
-import React from "react"
+import React, { FC } from "react"
 import s from "../Infobar.module.scss"
 import RecUserItem from "./RecUserItem"
+import { NavLink } from "react-router-dom"
+type TRecUsers = {
+  users: any
+}
 
-const RecUsers = () => {
+const RecUsers: FC<TRecUsers> = ({ users }) => {
   return (
     <div className={s.infobarItem}>
       <div className={s.infobarItemHeader}>
         <h1>Who to follow</h1>
       </div>
-      <RecUserItem />
-      <RecUserItem />
-      <RecUserItem />
-      <a href="#">Show more</a>
+      {users &&
+        users.map((user: any) => {
+          return (
+            <RecUserItem
+              key={user.userId}
+              avatar={user.avatar}
+              login={user.login}
+              username={user.name}
+            />
+          )
+        })}
+      <NavLink to="/users">Show more</NavLink>
     </div>
   )
 }

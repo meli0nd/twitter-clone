@@ -15,7 +15,6 @@
     align-items: center;
     justify-content: start;
     width: 750px;
-    height: 800px;
 
     img {
       margin-bottom: 45px;
@@ -39,6 +38,11 @@
         border-radius: 10px;
         margin-bottom: 25px;
         border: 1px solid $borders;
+        outline: none;
+        &:focus {
+          border: 1px solid $primary-blue;
+          box-shadow: 0px 0px 1px 1px rgba($color: $primary-blue, $alpha: 0.2);
+        }
       }
       span {
         margin-bottom: 20px;
@@ -61,6 +65,11 @@
             color: $primary-text-gray;
             border: 1px solid $borders;
             border-radius: 12px;
+            &:focus {
+              border: 1px solid $primary-blue;
+              box-shadow: 0px 0px 1px 1px
+                rgba($color: $primary-blue, $alpha: 0.2);
+            }
           }
           img {
             right: 5px;
@@ -112,16 +121,21 @@
   }
 
   .signUpBtn {
+    transition: 0.3s;
     display: block;
     cursor: pointer;
     font-size: 18px;
     font-weight: 500;
     border-radius: 30px;
     border: none;
-    padding: 20px 320px;
+    padding: 20px 300px;
     color: #fff;
     background: $primary-blue;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+
+    &:hover {
+      background: rgba($color: $primary-blue, $alpha: 0.7);
+    }
   }
 
   .signUpCount {
@@ -162,4 +176,53 @@
 
 input[type="submit"] {
   display: none;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  a {
+    transition: 0.3s;
+    text-decoration: none;
+    &:visited {
+      color: $primary-blue;
+    }
+    &:hover {
+      text-decoration: underline;
+    }
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+}
+
+.inputContainer {
+  position: relative;
+}
+
+.showPass {
+  position: absolute;
+  top: 11px;
+  right: 11px;
+  cursor: pointer;
+  padding: 10px;
+  width: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background: rgba($color: $primary-hover, $alpha: 0.5);
+  }
+  img {
+    display: block;
+    margin: 0 !important;
+  }
+}
+
+.uploadAvatar {
+  &::-webkit-file-upload-button {
+    display: none;
+  }
 }

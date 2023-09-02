@@ -5,20 +5,9 @@ import { useNavigate } from "react-router-dom"
 type TUserInfoProps = {
   setProfileEditPopUp: (bool: boolean) => void
   user: any
-  isAuth: boolean
 }
 
-const UserInfo: FC<TUserInfoProps> = ({
-  setProfileEditPopUp,
-  user,
-  isAuth,
-}) => {
-  const navigate = useNavigate()
-  useEffect(() => {
-    if (!isAuth) {
-      navigate("/auth/signup")
-    }
-  }, [isAuth])
+const UserInfo: FC<TUserInfoProps> = ({ setProfileEditPopUp, user }) => {
   return (
     <>
       <div className={s.userInfoContainer}>
