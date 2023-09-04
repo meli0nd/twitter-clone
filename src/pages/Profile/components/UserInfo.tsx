@@ -5,9 +5,14 @@ import { useNavigate } from "react-router-dom"
 type TUserInfoProps = {
   setProfileEditPopUp: (bool: boolean) => void
   user: any
+  isOwner: boolean
 }
 
-const UserInfo: FC<TUserInfoProps> = ({ setProfileEditPopUp, user }) => {
+const UserInfo: FC<TUserInfoProps> = ({
+  setProfileEditPopUp,
+  user,
+  isOwner,
+}) => {
   return (
     <>
       <div className={s.userInfoContainer}>
@@ -68,12 +73,16 @@ const UserInfo: FC<TUserInfoProps> = ({ setProfileEditPopUp, user }) => {
               />
             </div>
           </div>
-          <div
-            className={s.userInfoEditBtn}
-            onClick={() => setProfileEditPopUp(true)}
-          >
-            Edit profile
-          </div>
+          {isOwner ? (
+            <div
+              className={s.userInfoEditBtn}
+              onClick={() => setProfileEditPopUp(true)}
+            >
+              Edit profile
+            </div>
+          ) : (
+            <div className={s.userFollowBtn}>Follow</div>
+          )}
         </div>
       </div>
       <div className={s.userInfoData}>

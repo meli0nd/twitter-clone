@@ -17,6 +17,7 @@ const Home: FC = () => {
   const [postSettings, setPostSettings] = useState<number>(0)
   const [scrollToTop, setScrollToTop] = useState<boolean>(false)
   const { error } = useSelector((s: RootState) => s.authReducer)
+  const { user } = useSelector((s: RootState) => s.profileReducer)
 
   useEffect(() => {
     //@ts-ignore
@@ -56,18 +57,7 @@ const Home: FC = () => {
             })}
           </div>
         </div>
-        <div className={s.homeContent}>
-          <NewTweet />
-          <PostItem />
-          <PostItem />
-          <PostItem />
-          <PostItem />
-          <PostItem />
-          <PostItem />
-          <PostItem />
-          <PostItem />
-          <PostItem />
-        </div>
+        <div className={s.homeContent}>{user && <NewTweet user={user} />}</div>
       </div>
       <Infobar />
     </>

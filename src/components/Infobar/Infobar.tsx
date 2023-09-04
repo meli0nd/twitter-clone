@@ -14,14 +14,10 @@ const Infobar: FC<TInfobar> = ({ profileEditPopUp }) => {
   const dispatch = useDispatch()
   const { users } = useSelector((s: RootState) => s.usersReducer)
   const { user } = useSelector((s: RootState) => s.profileReducer)
-  const usersWithoutAuthUser = Object.values(users).filter(
-    (item: any) => item.login !== user?.login
-  )
+  const usersWithoutAuthUser = users
+    ? Object.values(users).filter((item: any) => item.login !== user?.login)
+    : []
 
-  useEffect(() => {
-    //@ts-ignore
-    dispatch(getAllUsersThunk())
-  }, [])
   return (
     <div className={`${s.infobar} ${profileEditPopUp && s.infobarActive}`}>
       <div className={s.infobarSearch}>
@@ -29,9 +25,7 @@ const Infobar: FC<TInfobar> = ({ profileEditPopUp }) => {
         <input type="search" placeholder="Search Tweety" />
       </div>
       <Trends />
-      {usersWithoutAuthUser && (
-        <RecUsers users={usersWithoutAuthUser.splice(0, 3)} />
-      )}
+      <RecUsers users={usersWithoutAuthUser.splice(0, 3)} />
     </div>
   )
 }

@@ -8,13 +8,6 @@ import ProfileEditPopUp from "./components/ProfileEditPopUp"
 import { useSelector } from "react-redux"
 import { RootState } from "../../Redux/store/store"
 import { useDispatch } from "react-redux"
-import { getUserThunk } from "../../Redux/reducers/user-profile"
-
-const profileNav = [
-  { name: "Tweets", id: 0, link: "/profile/" },
-  { name: "Media", id: 1, link: "/profile/media" },
-  { name: "Likes", id: 2, link: "/profile/likes" },
-]
 
 const Profile: FC = () => {
   const dispatch = useDispatch()
@@ -22,8 +15,23 @@ const Profile: FC = () => {
   const [profileEditPopUp, setProfileEditPopUp] = useState<boolean>(false)
   const navigate = useNavigate()
   const { user } = useSelector((s: RootState) => s.profileReducer)
+  const { users } = useSelector((s: RootState) => s.usersReducer)
   const { id } = useParams()
+  const profileOwner =
+    users && Object.values(users).filter((user: any) => user.login === id)
+  const isOwner = id === user?.login
 
+  const profileNav =
+    user && profileOwner
+      ? [
+          // @ts-ignore
+          { name: "Tweets", id: 0, link: `/${profileOwner[0].login}` },
+          // @ts-ignore
+          { name: "Media", id: 1, link: `/${profileOwner[0].login}/media` },
+          // @ts-ignore
+          { name: "Likes", id: 2, link: `/${profileOwner[0].login}/likes` },
+        ]
+      : []
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [scrollToTop])
@@ -54,13 +62,24 @@ const Profile: FC = () => {
             <img src="img/common/arrow.svg" alt="arrow" />
           </div>
           <div className={s.profileHeaderUser}>
-            <h1>{user?.name}</h1>
-            <span>3 Tweets</span>
+            <h1>{profileOwner[0].name}</h1>
+            <span>
+              {profileOwner[0]?.posts?.length > 1
+                ? profileOwner[0]?.posts?.length - 1
+                : "0"}{" "}
+              Tweets
+            </span>
           </div>
         </div>
-        <UserInfo setProfileEditPopUp={setProfileEditPopUp} user={user} />
+        {profileOwner && (
+          <UserInfo
+            setProfileEditPopUp={setProfileEditPopUp}
+            user={profileOwner[0]}
+            isOwner={isOwner}
+          />
+        )}
         <div className={s.profileTweetsOptions}>
-          {profileNav.map((item, index) => {
+          {profileNav.map((item) => {
             return (
               <NavLink
                 to={item.link}

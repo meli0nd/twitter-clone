@@ -1,5 +1,6 @@
 import React, { FC } from "react"
 import s from "../Infobar.module.scss"
+import { NavLink } from "react-router-dom"
 
 type TRecUserItem = {
   avatar: string
@@ -9,7 +10,7 @@ type TRecUserItem = {
 
 const RecUserItem: FC<TRecUserItem> = ({ avatar, login, username }) => {
   return (
-    <div className={s.userItem}>
+    <NavLink to={`/${login.toString()}/`} className={s.userItem}>
       <div className={s.userContainer}>
         <div className={s.userInfoAvatarImage}>
           <img
@@ -35,7 +36,7 @@ const RecUserItem: FC<TRecUserItem> = ({ avatar, login, username }) => {
         </div>
       </div>
       <button className={s.followButton}>Follow</button>
-    </div>
+    </NavLink>
   )
 }
 

@@ -71,9 +71,21 @@ const SignUpEmail = () => {
           bio: "",
           location: "",
           website: "",
-          posts: [],
-          following: [],
-          bookmarks: [],
+          posts: [
+            {
+              muting: "mute for Firebase",
+            },
+          ],
+          following: [
+            {
+              muting: "mute for Firebase",
+            },
+          ],
+          bookmarks: [
+            {
+              muting: "mute for Firebase",
+            },
+          ],
         }
         // @ts-ignore
         dispatch(signUpThunk(userData))
@@ -387,7 +399,7 @@ const SignUpEmail = () => {
             </div>
             <span>Choose avatar</span>
             <input
-            className={s.uploadAvatar}
+              className={s.uploadAvatar}
               type="file"
               accept="image/png, image/jpeg"
               {...register("avatar", { required: false })}

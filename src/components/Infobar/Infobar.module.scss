@@ -117,9 +117,12 @@
     }
 
     .userItem {
+      color: #000;
       padding: 10px 15px;
       width: 100%;
       width: 100%;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
       display: flex;
       justify-content: space-between;
       align-items: center;

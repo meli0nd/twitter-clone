@@ -12,7 +12,7 @@ const RecUsers: FC<TRecUsers> = ({ users }) => {
       <div className={s.infobarItemHeader}>
         <h1>Who to follow</h1>
       </div>
-      {users &&
+      {users.length ? (
         users.map((user: any) => {
           return (
             <RecUserItem
@@ -22,7 +22,17 @@ const RecUsers: FC<TRecUsers> = ({ users }) => {
               username={user.name}
             />
           )
-        })}
+        })
+      ) : (
+        <span
+          style={{
+            display: "inline-block",
+            padding: "10px",
+          }}
+        >
+          No users to recommend :(
+        </span>
+      )}
       <NavLink to="/users">Show more</NavLink>
     </div>
   )

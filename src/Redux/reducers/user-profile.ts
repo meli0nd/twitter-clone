@@ -5,6 +5,7 @@ import {
   ref as storageRef,
   uploadBytes,
 } from "firebase/storage"
+import { setUserTweets } from "./tweets"
 
 export type TUserBirthDate = {
   year: number
@@ -147,6 +148,7 @@ export const getUserThunk = (userId?: string) => async (dispatch: any) => {
       return snapshot.val()
     })
     dispatch(setUserAction(user))
+    dispatch(setUserTweets(user.posts))
   } catch (error) {
   } finally {
     dispatch(setProfileLoading(false))
@@ -154,6 +156,7 @@ export const getUserThunk = (userId?: string) => async (dispatch: any) => {
 }
 
 export const updateUserThunk = (data: any) => async (dispatch: any) => {
+  console.log(data)
   try {
     dispatch(setProfileLoading(true))
     //@ts-ignore
@@ -175,14 +178,13 @@ export const updateUserThunk = (data: any) => async (dispatch: any) => {
       bannerLink = ""
       avatarLink = ""
     }
-    const updatedUser = update(userRef, {
+    const updatedUser = {
       ...data,
       banner: bannerLink,
       avatar: avatarLink,
-    }).then((res) => res)
-    dispatch(
-      updateUserPopUp({ ...data, avatar: avatarLink, banner: bannerLink })
-    )
+    }
+    update(userRef, updatedUser)
+    dispatch(updateUserPopUp(updatedUser))
   } catch (error) {
   } finally {
     dispatch(setProfileLoading(false))

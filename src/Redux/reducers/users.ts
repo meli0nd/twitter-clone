@@ -3,7 +3,7 @@ import { TUser } from "./user-profile"
 import { database } from "../../services/firebase"
 
 let initialState = {
-  users: {} as TUser[] | [],
+  users: null,
   usersLogin: [] as string[],
   usersEmail: [] as string[],
   isLoadingUsers: false,

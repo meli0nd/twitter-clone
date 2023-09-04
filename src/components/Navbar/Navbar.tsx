@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux"
 import { getUserThunk, signOutAction } from "../../Redux/reducers/user-profile"
 import NavbarList from "./NavbarList"
 import PopUp from "./PopUp"
+import { getAllUsersThunk } from "../../Redux/reducers/users"
 
 const Navbar: FC = () => {
   const location = useLocation()
@@ -15,6 +16,7 @@ const Navbar: FC = () => {
   const navigate = useNavigate()
   const popUpRef = useRef<HTMLDivElement>(null)
   const { user } = useSelector((s: RootState) => s.profileReducer)
+  const { users } = useSelector((s: RootState) => s.usersReducer)
   const { error } = useSelector((s: RootState) => s.authReducer)
   const dispatch = useDispatch()
   const onLogOut = () => {
@@ -37,6 +39,11 @@ const Navbar: FC = () => {
     if (!user) {
       //@ts-ignore
       dispatch(getUserThunk())
+    }
+
+    if (!users) {
+      //@ts-ignore
+      dispatch(getAllUsersThunk())
     }
   }, [error])
 

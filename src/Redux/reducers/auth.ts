@@ -114,7 +114,11 @@ export const signUpThunk = (body: any) => async (dispatch: any) => {
       userAvatar = ""
     }
     const userRef = ref(database, `records/users/${userUID}`)
-    set(userRef, { ...body, userId: userUID, avatar: userAvatar })
+    set(userRef, {
+      ...body,
+      userId: userUID,
+      avatar: userAvatar,
+    })
     dispatch(setError(null))
     dispatch(setUserAction({ ...body, avatar: userAvatar, userId: userUID }))
     dispatch(setRegisterSuccess(true))
