@@ -9,6 +9,7 @@ import { getUserThunk, signOutAction } from "../../Redux/reducers/user-profile"
 import NavbarList from "./NavbarList"
 import PopUp from "./PopUp"
 import { getAllUsersThunk } from "../../Redux/reducers/users"
+import Loader from "../Loader/Loader"
 
 const Navbar: FC = () => {
   const location = useLocation()
@@ -37,15 +38,17 @@ const Navbar: FC = () => {
       navigate("/auth/signin")
     }
     if (!user) {
-      //@ts-ignore
-      dispatch(getUserThunk())
+      setTimeout(() => {
+        //@ts-ignore
+        dispatch(getUserThunk())
+      }, 1000)
     }
 
     if (!users) {
       //@ts-ignore
       dispatch(getAllUsersThunk())
     }
-  }, [error])
+  }, [error, user])
 
   useEffect(() => {
     document.addEventListener("click", togglePopUp)
@@ -56,6 +59,10 @@ const Navbar: FC = () => {
   }, [])
 
   if (error) {
+    return <div></div>
+  }
+
+  if (!user) {
     return <div></div>
   }
 

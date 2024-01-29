@@ -23,7 +23,6 @@ const App: FC = () => {
     (s: RootState) => s.authReducer
   )
   const { profileLoading } = useSelector((s: RootState) => s.profileReducer)
-  const { isLoadingUsers } = useSelector((s: RootState) => s.usersReducer)
 
   if (creatingAccountLoading) {
     return (
@@ -34,19 +33,13 @@ const App: FC = () => {
   } else if (loginLoading) {
     return (
       <div>
-        <Loader title="Loading sign in..." />
+        <Loader title="Singin in..." />
       </div>
     )
   } else if (profileLoading) {
     return (
       <div>
         <Loader title="Loading profile..." />
-      </div>
-    )
-  } else if (isLoadingUsers) {
-    return (
-      <div>
-        <Loader title="Loading users..." />
       </div>
     )
   }

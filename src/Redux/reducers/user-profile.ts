@@ -80,11 +80,12 @@ const profileReducer = (state = initialState, action: any): TInitialState => {
         //@ts-ignore
         user: {
           ...state.user,
-          avatar:
-            action.payload.avatar !== ""
-              ? action.payload.avatar
-              : state.user?.avatar,
-          banner: action.payload.banner,
+          avatar: !!action.payload.avatar
+            ? action.payload.avatar
+            : state.user?.avatar,
+          banner: !!action.payload.banner
+            ? action.payload.banner
+            : state.user?.banner,
           name: action.payload.name,
           bio: action.payload.bio,
           website: action.payload.website,
@@ -144,9 +145,18 @@ export const getUserThunk = (userId?: string) => async (dispatch: any) => {
     //@ts-ignore
     const { userUID } = JSON.parse(localStorage.getItem("FB_auth"))
     const userRef = ref(database, `/records/users/${userId ? userId : userUID}`)
-    const user = await get(userRef).then((snapshot) => {
+    const userFB = await get(userRef).then((snapshot) => {
       return snapshot.val()
     })
+    const userAvatarRef = storageRef(storage, `images/avatars/${userUID}`)
+    const userBannerRef = storageRef(storage, `images/banners/${userUID}`)
+    const downloadedAvatar = await getDownloadURL(userAvatarRef)
+    const downloadedBanner = await getDownloadURL(userBannerRef)
+    const user = {
+      ...userFB,
+      avatar: downloadedAvatar,
+      banner: downloadedBanner,
+    }
     dispatch(setUserAction(user))
     dispatch(setUserTweets(user.posts))
   } catch (error) {
@@ -156,39 +166,39 @@ export const getUserThunk = (userId?: string) => async (dispatch: any) => {
 }
 
 export const updateUserThunk = (data: any) => async (dispatch: any) => {
-  console.log(data)
   try {
-    dispatch(setProfileLoading(true))
     //@ts-ignore
     const { userUID } = JSON.parse(localStorage.getItem("FB_auth"))
     const userRef = ref(database, `/records/users/${userUID}`)
     const { banner, avatar } = data
-    let bannerLink = ""
-    let avatarLink = ""
-    if (banner) {
-      const userAvatarRef = storageRef(storage, `images/avatars/${userUID}`)
-      const userBannerRef = storageRef(storage, `images/banners/${userUID}`)
+    const bannerURL = banner ? URL.createObjectURL(banner) : ""
+    const avatarURL = avatar ? URL.createObjectURL(avatar) : ""
+    const updatedUserState = {
+      ...data,
+      banner: bannerURL,
+      avatar: avatarURL,
+    }
+    dispatch(updateUserPopUp(updatedUserState))
+    let bannerLinkFB = ""
+    let avatarLinkFB = ""
+    const userAvatarRef = storageRef(storage, `images/avatars/${userUID}`)
+    const userBannerRef = storageRef(storage, `images/banners/${userUID}`)
+    if (avatar) {
       await uploadBytes(userAvatarRef, avatar)
-      await uploadBytes(userBannerRef, banner)
       const downloadedAvatar = await getDownloadURL(userAvatarRef)
+      avatarLinkFB = downloadedAvatar.toString()
+    } else if (banner) {
+      await uploadBytes(userBannerRef, banner)
       const downloadedBanner = await getDownloadURL(userBannerRef)
-      bannerLink = downloadedBanner.toString()
-      avatarLink = downloadedAvatar.toString()
-    } else {
-      bannerLink = ""
-      avatarLink = ""
+      bannerLinkFB = downloadedBanner.toString()
     }
     const updatedUser = {
       ...data,
-      banner: bannerLink,
-      avatar: avatarLink,
+      banner: bannerLinkFB,
+      avatar: avatarLinkFB,
     }
     update(userRef, updatedUser)
-    dispatch(updateUserPopUp(updatedUser))
-  } catch (error) {
-  } finally {
-    dispatch(setProfileLoading(false))
-  }
+  } catch (error) {}
 }
 
 export default profileReducer

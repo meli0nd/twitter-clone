@@ -8,6 +8,8 @@ import ProfileEditPopUp from "./components/ProfileEditPopUp"
 import { useSelector } from "react-redux"
 import { RootState } from "../../Redux/store/store"
 import { useDispatch } from "react-redux"
+import Loader from "../../components/Loader/Loader"
+import { getUserThunk } from "../../Redux/reducers/user-profile"
 
 const Profile: FC = () => {
   const dispatch = useDispatch()
@@ -16,11 +18,17 @@ const Profile: FC = () => {
   const navigate = useNavigate()
   const { user } = useSelector((s: RootState) => s.profileReducer)
   const { users } = useSelector((s: RootState) => s.usersReducer)
+  const { profileLoading } = useSelector((s: RootState) => s.profileReducer)
+  useEffect(() => {
+    if (!user) {
+      //@ts-ignore
+      dispatch(getUserThunk())
+    }
+  }, [profileLoading, user])
   const { id } = useParams()
   const profileOwner =
     users && Object.values(users).filter((user: any) => user.login === id)
   const isOwner = id === user?.login
-
   const profileNav =
     user && profileOwner
       ? [
@@ -31,7 +39,8 @@ const Profile: FC = () => {
           // @ts-ignore
           { name: "Likes", id: 2, link: `/${profileOwner[0].login}/likes` },
         ]
-      : []
+      : [{ name: "0", id: 0, link: `/0/likes` }]
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [scrollToTop])
@@ -44,6 +53,13 @@ const Profile: FC = () => {
     document.body.style.overflowX = "auto"
   }
 
+  if (!user) {
+    return (
+      <div>
+        <Loader title="Loading profile..." />
+      </div>
+    )
+  }
   return (
     <div className={s.profile}>
       {profileEditPopUp && (
@@ -74,8 +90,9 @@ const Profile: FC = () => {
         {profileOwner && (
           <UserInfo
             setProfileEditPopUp={setProfileEditPopUp}
-            user={profileOwner[0]}
+            user={user}
             isOwner={isOwner}
+            profileEditPopUp={profileEditPopUp}
           />
         )}
         <div className={s.profileTweetsOptions}>

@@ -6,12 +6,14 @@ type TUserInfoProps = {
   setProfileEditPopUp: (bool: boolean) => void
   user: any
   isOwner: boolean
+  profileEditPopUp: boolean
 }
 
 const UserInfo: FC<TUserInfoProps> = ({
   setProfileEditPopUp,
   user,
   isOwner,
+  profileEditPopUp,
 }) => {
   return (
     <>

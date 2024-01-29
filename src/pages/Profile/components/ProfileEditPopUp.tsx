@@ -5,14 +5,11 @@ import { formRegex } from "../../../assets/regex"
 import { useSelector } from "react-redux"
 import { RootState } from "../../../Redux/store/store"
 import { useDispatch } from "react-redux"
-import {
-  updateUserPopUp,
-  updateUserThunk,
-} from "../../../Redux/reducers/user-profile"
+import { updateUserThunk } from "../../../Redux/reducers/user-profile"
 import PopUpForm from "./PopUpForm"
 
 type TProfilEditPopUp = {
-  setProfileEditPopUp: any
+  setProfileEditPopUp: (toggle: boolean) => void
 }
 
 const ProfileEditPopUp: FC<TProfilEditPopUp> = ({ setProfileEditPopUp }) => {
